@@ -17,6 +17,6 @@ mvn spring-boot:run
 
 ## Documentação
 
-A documentação da API está disponível no [SwaggerHub](https://app.swaggerhub.com/apis/thaisalonso/agenda/1.0)
+A documentação da API está disponível no [SwaggerHub](https://app.swaggerhub.com/apis/thaisalonso/agenda/1.0).
 
 
