@@ -1,6 +1,6 @@
 # Agenda
 
-É uma API REST para inclusão de pessoas e suas listas de contatos.
+É uma API RESTful para inclusão de pessoas e suas listas de contatos.
 
 ## Requisitos
 

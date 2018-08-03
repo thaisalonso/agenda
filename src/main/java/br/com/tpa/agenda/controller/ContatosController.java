@@ -22,23 +22,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tpa.agenda.model.Contato;
 import br.com.tpa.agenda.model.Pessoa;
-import br.com.tpa.agenda.repository.ContatosRepository;
-import br.com.tpa.agenda.repository.PessoasRepository;
+import br.com.tpa.agenda.service.ContatosService;
+import br.com.tpa.agenda.service.PessoasService;
 
 @RestController
 @RequestMapping("/contatos")
 public class ContatosController {
 	
 	@Autowired
-	private ContatosRepository contatos;
+	private ContatosService contatosService;
 	
 	@Autowired
-	private PessoasRepository pessoas;
+	private PessoasService pessoasService;
 	
 	@PostMapping("/pessoa/{codigoPessoa}")
 	public ResponseEntity<Contato> inserirContato(@PathVariable Long codigoPessoa, @Valid @RequestBody Contato contato) {
 		
-		Pessoa pessoa = pessoas.findOne(codigoPessoa);
+		Pessoa pessoa = pessoasService.buscarPessoa(codigoPessoa);
 		
 		if (pessoa == null) {
 			return notFound().build();
@@ -46,13 +46,13 @@ public class ContatosController {
 		
 		contato.setPessoa(pessoa);
 		
-		return ok(contatos.save(contato));
+		return ok(contatosService.inserirContato(contato));
 	}
 	
 	@PutMapping("/{codigo}")
 	public ResponseEntity<Contato> atualizarContato(@PathVariable Long codigo, @Valid @RequestBody Contato contato) {
 		
-		Contato contatoExistente = contatos.findOne(codigo);
+		Contato contatoExistente = contatosService.buscarContato(codigo);
 		
 		if (contatoExistente == null) {
 			return notFound().build();
@@ -60,7 +60,7 @@ public class ContatosController {
 		
 		BeanUtils.copyProperties(contato, contatoExistente, "codigo");
 		
-		contatoExistente = contatos.save(contatoExistente);
+		contatoExistente = contatosService.inserirContato(contatoExistente);
 		
 		return ok(contatoExistente);
 	}
@@ -68,7 +68,7 @@ public class ContatosController {
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Contato> buscarContato(@PathVariable Long codigo) {
 		
-		Contato contato = contatos.findOne(codigo);
+		Contato contato = contatosService.buscarContato(codigo);
 		
 		if (contato == null) {
 			return notFound().build();
@@ -79,21 +79,18 @@ public class ContatosController {
 	
 	@GetMapping
 	public List<Contato> listarContatos() {
-		return contatos.findAll();
+		return contatosService.listarContatos();
 	}
 
 
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<Void> excluirContato(@PathVariable Long codigo) {
-		
-		Contato contato = contatos.findOne(codigo);
+		Contato contato = contatosService.buscarContato(codigo);
 		
 		if (contato == null) {
 			return notFound().build();
 		}
-		
-		contatos.delete(contato);
-		
+		contatosService.excluirContato(contato);
 		return noContent().build();
 	}
 }

@@ -20,7 +20,7 @@ public class Contato {
 	private Long codigo;
 	
 	@NotNull
-	private Long telefone;
+	private String telefone;
 	
 	@NotNull
 	@Email
@@ -46,11 +46,11 @@ public class Contato {
 		this.codigo = codigo;
 	}
 
-	public Long getTelefone() {
+	public String getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(Long telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
 

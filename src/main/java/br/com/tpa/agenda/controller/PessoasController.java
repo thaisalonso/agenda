@@ -21,59 +21,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tpa.agenda.model.Pessoa;
-import br.com.tpa.agenda.repository.PessoasRepository;
+import br.com.tpa.agenda.service.PessoasService;
 
 @RestController
 @RequestMapping("/pessoas")
 public class PessoasController {
-	
+		
 	@Autowired
-	private PessoasRepository pessoas;
+	private PessoasService pessoasService;
 	
 	@PostMapping
 	public Pessoa inserirPessoa(@Valid @RequestBody Pessoa pessoa) {
-		return pessoas.save(pessoa);
+		return pessoasService.inserirPessoa(pessoa);
 	}
 	
 	@PutMapping("/{codigo}")
 	public ResponseEntity<Pessoa> atualizarPessoa(@PathVariable Long codigo, @Valid @RequestBody Pessoa pessoa) {
-		Pessoa pessoaExistente = pessoas.findOne(codigo);
+		Pessoa pessoaExistente = pessoasService.buscarPessoa(codigo);
 		
 		if (pessoaExistente == null) {
 			return notFound().build();
 		}
 		BeanUtils.copyProperties(pessoa, pessoaExistente, "codigo");
-		
-		pessoaExistente = pessoas.save(pessoaExistente);
-		
+		pessoaExistente = pessoasService.inserirPessoa(pessoaExistente);
 		return ok(pessoaExistente);
 	}
 	
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Pessoa> buscarPessoa(@PathVariable Long codigo) {
 		
-		Pessoa pessoa = pessoas.findOne(codigo);
+		Pessoa pessoa = pessoasService.buscarPessoa(codigo);
 		if (pessoa == null) {
 			return notFound().build();
 		}
-		
 		return ok(pessoa);
 	}
 	
 	@GetMapping
 	public List<Pessoa> listarPessoas() {
-		return pessoas.findAll();
+		return pessoasService.listarPessoas();
 	}
 
 
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<Void> excluirPessoa(@PathVariable Long codigo) {
 		
-		Pessoa pessoa = pessoas.findOne(codigo);
+		Pessoa pessoa = pessoasService.buscarPessoa(codigo);
 		if (pessoa == null) {
 			return notFound().build();
 		}
-		pessoas.delete(pessoa);
+		pessoasService.excluirPessoa(pessoa);
 		
 		return noContent().build();
 	}
