@@ -22,14 +22,28 @@ public class Pessoa {
 	private String nome;
 	
 	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
-	private List<Contato> contato;
-
-	public List<Contato> getContato() {
-		return contato;
+	public List<Telefone> telefone;
+	
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+	public List<Endereco> endereco;
+	
+	@OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL)
+	private List<Email> email;
+	
+	public List<Telefone> getTelefone() {
+		return telefone;
 	}
 
-	public void setContato(List<Contato> contato) {
-		this.contato = contato;
+	public void setTelefone(List<Telefone> telefone) {
+		this.telefone = telefone;
+	}
+
+	public List<Endereco> getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(List<Endereco> endereco) {
+		this.endereco = endereco;
 	}
 
 	public Long getCodigo() {
@@ -47,5 +61,14 @@ public class Pessoa {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	public List<Email> getEmail() {
+		return email;
+	}
+
+	public void setEmail(List<Email> email) {
+		this.email = email;
+	}
+	
 	
 }

@@ -5,15 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
-public class Contato {
+public class Telefone {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,21 +23,13 @@ public class Contato {
 	@NotNull
 	private String telefone;
 	
+	@OneToOne
 	@NotNull
-	@Email
-	private String email; //onde vai ficar o email nesse novo formato?
+	private TipoContato tipoContato;
 	
 	@ManyToOne
 	@JsonIgnore
 	private Pessoa pessoa;
-
-	public Pessoa getPessoa() {
-		return pessoa;
-	}
-
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
-	}
 
 	public Long getCodigo() {
 		return codigo;
@@ -48,7 +38,7 @@ public class Contato {
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
-	
+
 	public String getDdd() {
 		return ddd;
 	}
@@ -64,38 +54,22 @@ public class Contato {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-
-	public String getEmail() {
-		return email;
+	
+	public TipoContato getTipoContato() {
+		return tipoContato;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setTipoContato(TipoContato tipoContato) {
+		this.tipoContato = tipoContato;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		return result;
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Contato other = (Contato) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
-				return false;
-		} else if (!codigo.equals(other.codigo))
-			return false;
-		return true;
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
+
 	
 }
